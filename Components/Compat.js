@@ -50,13 +50,9 @@ export function StoryList(data) {
         },
         right: [
             {
-                text: "Xem",
-                onPress: data.navigateItem,
-                backgroundColor: "green"
-            },
-            {
                 onPress: showAlert,
-                text: "Xóa", type: "delete"
+                text: "Xóa",
+                backgroundColor:"red"
             },
         ],
         rowId: item.id,
@@ -64,8 +60,8 @@ export function StoryList(data) {
     }
     return (
         // <TouchableOpacity activeOpacity={0.7}>
-        <Swipeout {...swipeSetting} style={{ marginBottom: 5, borderRadius: 10, flexDirection: "column", flex: 1,backgroundColor:"green"}}>
-            <View activeOpacity={0.7} style={itemStyle.parent}>
+        <Swipeout {...swipeSetting} style={{ marginBottom: 5, borderRadius: 10, flexDirection: "column", flex: 1,backgroundColor:"red"}}>
+            <TouchableOpacity activeOpacity={0.7} style={itemStyle.parent} onPress={()=>data.navigateItem()}>
                 <Image style={itemStyle.imgThumb} source={{ uri: item.img }} />
                 <View style={itemStyle.rightContent}>
                     <Text numberOfLines={2} style={itemStyle.textName}>{item.name}</Text>
@@ -73,7 +69,7 @@ export function StoryList(data) {
                     <Text style={itemStyle.textTotalChap}>Số tập: {item.totalChap}</Text>
                     <Text style={itemStyle.textFull}>{item.isFull ? "Hoàn thành" : "Chưa hoàn thành"}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         </Swipeout>
         // </TouchableOpacity>
 
