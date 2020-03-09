@@ -1,34 +1,88 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image, Text, Alert } from 'react-native';
-import { TextInput, TouchableOpacity, RectButton } from 'react-native-gesture-handler';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import Animated from 'react-native-reanimated';
+import { StyleSheet, View, Image, Text, Alert, TextInput, TouchableOpacity } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 export function EditText(data) {
+    const styleEditText = StyleSheet.create({
+        parent: {
+            backgroundColor: "transparent",
+            flexDirection: "row",
+            marginTop: 8,
+            marginHorizontal: 16,
+            borderColor: "#ff5722",
+            borderRadius: 10,
+            borderWidth: 1,
+            padding: 10,
+            fontWeight: "bold"
+        },
+        drawable: {
+            marginTop: 5,
+            width: data.drawable ? 20 : 0,
+            height: data.drawable ? 20 : 0,
+            marginRight: 8
+        },
+        editText: {
+            flex: 1
+        }
+    });
+
+    const Drawable = () => (
+        data.drawable ? <Image style={styleEditText.drawable} source={data.drawable} /> : null
+    );
     return (
-        <TextInput style={styleEditText.editText}
-            textContentType={data.inputType}
-            placeholder={data.placeHolder}
-            onChangeText={(text) => data.onValueChange(text)}
-            keyboardType={data.keyboardType} />
+        <View style={styleEditText.parent}>
+            <Drawable />
+            <TextInput editable={true} style={styleEditText.editText}
+                style={{ color: "black", placeholderTextColor: "gray" }}
+                value={data.value}
+                placeholderTextColor = "#C0C0C0"
+                textContentType={data.inputType}
+                placeholder={data.hint}
+                onChangeText={(text) => data.onValueChange(text)}
+                keyboardType={data.keyboardType} />
+        </View>
+
     );
 }
-const styleEditText = StyleSheet.create({
-    editText: {
-        marginTop: 8,
-        marginHorizontal: 16,
-        borderColor: "#ff5722",
-        borderRadius: 10,
-        borderWidth: 1,
-        padding: 10,
-        fontWeight: "bold"
-    }
-});
+
+
+export function TextArea(data) {
+    const styleEditText = StyleSheet.create({
+        parent: {
+            marginTop: 8,
+            marginHorizontal: 16,
+            borderColor: "#ff5722",
+            borderRadius: 10,
+            borderWidth: 1,
+            padding: 10,
+            fontWeight: "bold",
+            backgroundColor: "transparent"
+        },
+        editText: {
+            textAlignVertical: "top"
+        }
+    });
+    return (
+        <View style={styleEditText.parent}>
+            <TextInput
+                style={{ color: "black", placeholderTextColor: "gray" }}
+                editable={true}
+                placeholderTextColor = "#C0C0C0"
+                style={styleEditText.editText}
+                value={data.value}
+                multiline={true}
+                numberOfLines={5}
+                textContentType={data.inputType}
+                placeholder={data.hint}
+                onChangeText={(text) => data.onValueChange(text)}
+                keyboardType={data.keyboardType} />
+        </View>
+
+    );
+}
 
 
 export function StoryList(data) {
     const item = data.item;
-
     const showAlert = () => {
         Alert.alert(
             "Cảnh báo",
@@ -43,16 +97,19 @@ export function StoryList(data) {
     const swipeSetting = {
         autoClose: true,
         onClose: (secId, rowId, direction) => {
-            
         },
         onOpen: (secId, rowId, direction) => {
-
         },
         right: [
             {
                 onPress: showAlert,
                 text: "Xóa",
-                backgroundColor:"red"
+                backgroundColor: "red"
+            },
+            {
+                onPress: data.onUpdateStory,
+                text: "Chỉnh sửa",
+                backgroundColor: "green"
             },
         ],
         rowId: item.id,
@@ -60,8 +117,8 @@ export function StoryList(data) {
     }
     return (
         // <TouchableOpacity activeOpacity={0.7}>
-        <Swipeout {...swipeSetting} style={{ marginBottom: 5, borderRadius: 10, flexDirection: "column", flex: 1,backgroundColor:"red"}}>
-            <TouchableOpacity activeOpacity={0.7} style={itemStyle.parent} onPress={()=>data.navigateItem()}>
+        <Swipeout {...swipeSetting} style={{ marginBottom: 5, borderRadius: 10, flexDirection: "column", flex: 1, backgroundColor: "red" }}>
+            <TouchableOpacity activeOpacity={0.7} style={itemStyle.parent} onPress={() => { data.navigateItem() }}>
                 <Image style={itemStyle.imgThumb} source={{ uri: item.img }} />
                 <View style={itemStyle.rightContent}>
                     <Text numberOfLines={2} style={itemStyle.textName}>{item.name}</Text>
@@ -110,4 +167,42 @@ const itemStyle = StyleSheet.create({
     btnRight: {
         marginTop: 30,
     }
-})
+});
+
+export function MyButton(data) {
+    const style = StyleSheet.create({
+        buttonStyle: {
+            margin: 8,
+            backgroundColor: "#ff5722",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 10,
+
+            shadowOffset: { height: 10, width: 0 },
+            shadowColor: "#2AC062",
+            shadowOpacity: 0.4,
+            borderRadius: 20
+        },
+        buttonStyleDisable: {
+            margin: 8,
+            backgroundColor: "gray",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 10,
+
+            shadowOffset: { height: 10, width: 0 },
+            shadowColor: "#2AC062",
+            shadowOpacity: 0.4,
+            borderRadius: 20
+        },
+        textTouchable: {
+            color: "#fff",
+            fontWeight: "bold"
+        }
+    });
+    return (
+        <TouchableOpacity activeOpacity={0.8} disabled={data.disabled} style={data.disabled ? style.buttonStyleDisable : style.buttonStyle} onPress={data.onPress}>
+            <Text style={style.textTouchable}>{data.title}</Text>
+        </TouchableOpacity>
+    );
+}

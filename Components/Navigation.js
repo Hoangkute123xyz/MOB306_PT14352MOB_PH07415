@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Image, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, Image, View,TouchableOpacity } from 'react-native';
 
 export function Toolbar(data) {
 
@@ -54,7 +53,7 @@ const styleLeft = StyleSheet.create({
     imgBack: {
         width: 20,
         height: 20,
-        marginLeft: 30,
+        marginLeft: 15,
         marginRight: 18,
         marginTop: 4
     }

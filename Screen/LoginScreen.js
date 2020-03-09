@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import {Text, View, StyleSheet, Alert} from 'react-native';
 import { Toolbar } from '../Components/Navigation';
-import { EditText } from '../Components/Compat';
+import { EditText, MyButton } from '../Components/Compat';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 
 
@@ -13,7 +13,7 @@ export function Login({navigation}){
         <View style={style.parent}>
             <Toolbar title="Đăng nhập"/>
             <View style={style.panelContent}>
-                <EditText placeHolder="Tên" onValueChange={(text) =>{
+                <EditText hint="Tên" drawable={require("../Resouces/img/001-user.png")} onValueChange={(text) =>{
                             setName(text)
                             if(Name.length>0 && Age>=18){
                             setDisable(false)
@@ -21,7 +21,7 @@ export function Login({navigation}){
                             setDisable(true)
                         }
                     }}/>
-                <EditText keyboardType="number-pad" placeHolder="Tuổi" onValueChange={(text)=>{
+                <EditText keyboardType="number-pad" drawable={require("../Resouces/img/002-age.png")} hint="Tuổi" onValueChange={(text)=>{
                             
                         if(Name.length>0 && text>=18){
                             setDisable(false)
@@ -29,11 +29,9 @@ export function Login({navigation}){
                             setDisable(true)
                         }
                     }}/>
-                <TouchableOpacity disabled={isDisable} style={isDisable?style.buttonStyleDisable:style.buttonStyle} onPress={()=>{
+                <MyButton disabled={isDisable} title="Vào đọc truyện" onPress={()=>{
                         navigation.replace("Home",{name:Name,age:Age} );
-                    }}>
-                    <Text style={style.textTouchable}>Vào đọc truyện</Text>
-                </TouchableOpacity>
+                    }}/>
             </View>
         </View>
     )
@@ -50,32 +48,4 @@ const style = StyleSheet.create({
         backgroundColor:"#fff",
         borderRadius:20,
     },
-    buttonStyle:{
-        margin:8,
-        backgroundColor:"#ff5722",
-        justifyContent:"center",
-        alignItems:"center",
-        padding:10,
-
-        shadowOffset:{height:10,width:0},
-        shadowColor:"#2AC062",
-        shadowOpacity:0.4,
-        borderRadius:20
-    },
-    buttonStyleDisable:{
-        margin:8,
-        backgroundColor:"gray",
-        justifyContent:"center",
-        alignItems:"center",
-        padding:10,
-
-        shadowOffset:{height:10,width:0},
-        shadowColor:"#2AC062",
-        shadowOpacity:0.4,
-        borderRadius:20
-    },
-    textTouchable:{
-        color:"#fff",
-        fontWeight:"bold"
-    }
 })
