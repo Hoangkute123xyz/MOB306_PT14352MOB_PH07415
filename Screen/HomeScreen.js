@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList, ScrollView, Modal, ActivityIndicator, LayoutAnimation, Image, TouchableOpacity, Alert } from 'react-native'
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, FlatList, Modal, ActivityIndicator, Image, TouchableOpacity, Alert } from 'react-native'
 import { Toolbar } from '../Components/Navigation'
 import { EditText, StoryList, MyButton, TextArea } from '../Components/Compat';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+import RadioForm from 'react-native-simple-radio-button';
 
 
 const api = "http://5e60bfbecbbe0600146cbcf0.mockapi.io/Story";
@@ -142,17 +142,19 @@ const ModalEditStory = (data) => {
     const [content, setContent] = useState("");
     const [totalChap, setTotalChap] = useState("");
     const [img, setImg] = useState("");
+    const [isClear,setClear] = useState(true);
     const radioProps = [
         { label: "Hoàn thành      ", value: true },
         { label: "Chưa hoàn thành", value: false }
     ];
-    if(data.isUpdate && nameSetter.length==0){
+    if(data.isUpdate && isClear){
         setName(data.currentStory.name);
         setType(data.currentStory.type);
         setContent(data.currentStory.content);
         setFull(data.currentStory.isFull);
         setImg(data.currentStory.img);
         setTotalChap(data.currentStory.totalChap);
+        setClear(false);
     }
 
     const getData = () => {
@@ -182,6 +184,7 @@ const ModalEditStory = (data) => {
         setTotalChap("");
         data.clear()
         console.log("clearData");
+        setClear(true);
     }
     const handleAddStory = () => {
 
@@ -214,7 +217,7 @@ const ModalEditStory = (data) => {
                 "Không bỏ trống trường nào!",
                 [{
                     text: "OK",
-                    onPress: () => console.log("abc"),
+                    onPress: () => {},
                     style: "cancel"
                 }],
                 { cancelable: true }
@@ -251,7 +254,7 @@ const ModalEditStory = (data) => {
                 "Không bỏ trống trường nào!",
                 [{
                     text: "OK",
-                    onPress: () => console.log("abc"),
+                    onPress: () => {},
                     style: "cancel"
                 }],
                 { cancelable: true }

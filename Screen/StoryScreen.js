@@ -18,8 +18,8 @@ export function Story({ route, navigation }) {
             .then((responseJson) => {
                 setStory(responseJson);
                 setShowLoading(false);
-                console.log(responseJson);
             })
+            .catch((error) => console.error(error))
     }
 
     if (isFirst) {

@@ -1,8 +1,7 @@
 import React,{useState} from 'react';
-import {Text, View, StyleSheet, Alert} from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import { Toolbar } from '../Components/Navigation';
 import { EditText, MyButton } from '../Components/Compat';
-import {TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export function Login({navigation}){

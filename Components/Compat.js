@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Image, Text, Alert, TextInput, TouchableOpacity } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 export function EditText(data) {
