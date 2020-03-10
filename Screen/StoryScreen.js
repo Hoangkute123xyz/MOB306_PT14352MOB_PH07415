@@ -1,25 +1,48 @@
-import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Image, Modal, ActivityIndicator } from 'react-native';
 import { Toolbar } from '../Components/Navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export function Story({ route, navigation }) {
-    const item = route.params;
+    const id = route.params.id;
+    const [isLoadding, setShowLoading] = useState(true);
+    const [isFirst, setFirst] = useState(true);
+    const [story, setStory] = useState({});
+    const api = "http://5e60bfbecbbe0600146cbcf0.mockapi.io/Story";
+
+    const fetchItem = () => {
+        return fetch(
+            api + "/" + id,
+            {}
+        ).then((response) => response.json())
+            .then((responseJson) => {
+                setStory(responseJson);
+                setShowLoading(false);
+                console.log(responseJson);
+            })
+    }
+
+    if (isFirst) {
+        fetchItem();
+        setFirst(false);
+    }
+
 
     return (
         <View style={style.parent}>
-            <Toolbar title={item.name} hasBack={true} onBackPressed={() => navigation.goBack()} />
+            <Toolbar title={story.name} hasBack={true} onBackPressed={() => navigation.goBack()} />
             <ScrollView>
                 <View style={style.boxTitle}>
-                    <Image style={style.imgThumb} source={{ uri: item.img }} />
+                    <Image style={style.imgThumb} source={{ uri: story.img }} />
                     <View>
-                        <Text style={style.textType}>Thể loại: {item.type}</Text>
-                        <Text>Số tập: {item.totalChap}</Text>
-                        <Text>Tình trạng: {item.isFull ? "Hoàn thành" : "Chưa hoàn thành"}</Text>
+                        <Text style={style.textType}>Thể loại: {story.type}</Text>
+                        <Text>Số tập: {story.totalChap}</Text>
+                        <Text>Tình trạng: {story.isFull ? "Hoàn thành" : "Chưa hoàn thành"}</Text>
                     </View>
                 </View>
-                <Text style={style.textContent}>{item.content}</Text>
+                <Text style={style.textContent}>{story.content}</Text>
             </ScrollView>
+            <ShowLoading visible={isLoadding} />
         </View>
     );
 }
@@ -46,13 +69,23 @@ const style = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 10,
     },
-    textContent:{
-        padding:10,
-        fontSize:16,
-        borderRadius:10,
-        borderColor:"#000",
-        borderWidth:1,
-        textAlign:"justify",
-        margin:10,
+    textContent: {
+        padding: 10,
+        fontSize: 16,
+        borderRadius: 10,
+        borderColor: "#000",
+        borderWidth: 1,
+        textAlign: "justify",
+        margin: 10,
     }
-})
+});
+const ShowLoading = ({ visible }) => (
+    <Modal transparent={true} visible={visible} onRequestClose={() => null}>
+        <View style={{ flex: 1, backgroundColor: "rgba(52, 52, 52, 0.8)", alignItems: "center", justifyContent: "center" }}>
+            <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
+                <Text style={{ fontSize: 20 }}>Xin chờ</Text>
+                <ActivityIndicator size="large" />
+            </View>
+        </View>
+    </Modal>
+);

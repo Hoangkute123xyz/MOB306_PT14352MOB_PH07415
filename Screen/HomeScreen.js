@@ -62,7 +62,7 @@ export function Home({ route, navigation }) {
                     data={list}
                     renderItem={({ item }) =>
                         <StoryList deleteItemById={deleteItem}
-                            navigateItem={() => navigation.navigate("Story", item)}
+                            navigateItem={() => navigation.navigate("Story", {id:item.id})}
                             item={item}
                             onUpdateStory={() => {
                                 setUpdate(true);
